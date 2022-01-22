@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta character set="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase data in table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-3">
+        <table class="table table-dark">
+            <thead>
+                <th>No:</th>
+                <th>Name</th>
+                <th>Temperature</th>
+                <th>Timing</th>
+            </thead>
+            <tbody id="tbody1">
+
+            </tbody>
+        </table>
+    </div>
+    <script type="module">
+        var randomVar = 0;
+        var stdNo = 0;
+        var tbody = document.getElementById('tbody1');
+        function AddItemToTable(name, temp, time) {
+            let trow = document.createElement("tr")
+            let td1 = document.createElement("td")
+            let td2 = document.createElement("td")
+            let td3 = document.createElement("td")
+            let td4 = document.createElement("td")
+            td1.innerHTML = ++stdNo;
+            td2.innerHTML = name;
+            td3.innerHTML = temp;
+            td4.innerHTML = time;
+
+
+            trow.appendChild(td1);
+            trow.appendChild(td2);
+            trow.appendChild(td3);
+            trow.appendChild(td4);
+            tbody.appendChild(trow);
+        }
+
+        function AddAllItemsToTable(TheStudent) {
+
+            stdNo = 0;
+            tbody.innerHTML = "";
+            for (let i = 0; i < 40; i++) {
+                TheStudent.forEach(element => {
+                AddItemToTable(element.NineA.split(',')[randomVar], element.NineATemp.split(',')[randomVar], element.NineATimings.split(',')[randomVar]);
+                randomVar = randomVar + 1;   
+            })}
+        }
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEmhJFotfwHa49BOB2gCmPXS36nE2J6gM",
+            authDomain: "attendance-system-57df7.firebaseapp.com",
+            databaseURL: "https://attendance-system-57df7-default-rtdb.firebaseio.com",
+            projectId: "attendance-system-57df7",
+            storageBucket: "attendance-system-57df7.appspot.com",
+            messagingSenderId: "1038539515204",
+            appId: "1:1038539515204:web:35fd7afeadd6758eaa6311"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        import { getDatabase, ref, child, onValue, get }
+            from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js";
+        const db = getDatabase();
+
+
+
+
+        function GetAllDataOnce() {
+            const dbRef = ref(db);
+            get(child(dbRef, "Attendance"))
+                .then((snapshot) => {
+                    var students = [];
+
+                    snapshot.forEach(childSnapshot => {
+                        students.push(childSnapshot.val());
+                    });
+                    AddAllItemsToTable(students);
+
+                });
+        }
+        window.onload = GetAllDataOnce();
+
+    </script>
+
+</body>
+
+</html>
