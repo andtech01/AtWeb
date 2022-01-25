@@ -1,7 +1,9 @@
 const loginForm = document.getElementById("login-form");
 const loginButton = document.getElementById("login-form-submit");
-// const loginErrorMsg = document.getElementById("login-error-msg");
-
+var date;
+var classs;
+var splitDate;
+var finalDate;
 loginButton.addEventListener("click", (e) => {
     e.preventDefault();
     const username = loginForm.username.value;
@@ -14,3 +16,4 @@ loginButton.addEventListener("click", (e) => {
         alert("Credentials Incorrect");
     }
 })
+

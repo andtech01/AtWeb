@@ -8,6 +8,9 @@
     <title>Firebase data in table</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="homestyle.css">
+
+
 </head>
 
 <body>
@@ -17,7 +20,7 @@
                 <th>No:</th>
                 <th>Name</th>
                 <th>Temperature</th>
-                <th>Timing</th>
+                <th>Time of arrival</th>
             </thead>
             <tbody id="tbody1">
 
@@ -25,7 +28,15 @@
         </table>
     </div>
     <script type="module">
-        var randomVar = 0;
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        var queries = queryString.split(",");
+        var classs = queryString.split(",")[0];
+        var datee = queryString.split(",")[1];
+        alert(classs);
+        var classUrl = "Attendance/13-01-22/NineA";
+        var tempUrl = "Attendance/13-01-22/NineATemp";
+        var timeUrl = "Attendance/13-01-22/NineATimings";
         var stdNo = 0;
         var tbody = document.getElementById('tbody1');
         function AddItemToTable(name, temp, time) {
@@ -34,7 +45,7 @@
             let td2 = document.createElement("td")
             let td3 = document.createElement("td")
             let td4 = document.createElement("td")
-            td1.innerHTML = ++stdNo;
+            td1.innerHTML = ++stdNo + ".";
             td2.innerHTML = name;
             td3.innerHTML = temp;
             td4.innerHTML = time;
@@ -48,15 +59,55 @@
         }
 
         function AddAllItemsToTable(TheStudent) {
-
+            var strValClass;
+            var splitValClass;
+            var splitValLengthClass;
+            var strValTemp;
+            var splitValTemp;
+            var splitValLengthTemp;
+            var strValTime;
+            var splitValTime;
+            var splitValLengthTime;
+            var val = 0;
+            let i = 0;
             stdNo = 0;
-            tbody.innerHTML = "";
-            for (let i = 0; i < 40; i++) {
-                TheStudent.forEach(element => {
-                AddItemToTable(element.NineA.split(',')[randomVar], element.NineATemp.split(',')[randomVar], element.NineATimings.split(',')[randomVar]);
-                randomVar = randomVar + 1;   
-            })}
+            console.log("Function is running")
+            const dbref = ref(db);
+            get(child(dbref, classUrl)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    strValClass = snapshot.val();
+                    splitValClass = strValClass.split(',');
+                    splitValLengthClass = splitValClass.length;
+                    console.log(splitValClass);
+                    console.log("Length = ", splitValLengthClass);
+                }
+            });
+            get(child(dbref, tempUrl)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    strValTemp = snapshot.val();
+                    splitValTemp = strValTemp.split(',');
+                    splitValLengthTemp = splitValTemp.length;
+                    console.log(splitValTemp);
+                    console.log("Length Time = ", splitValLengthTemp);
+                }
+            });
+            get(child(dbref, timeUrl)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    strValTime = snapshot.val();
+                    splitValTime = strValTime.split(',');
+                    splitValLengthTime = splitValTime.length;
+                    console.log(splitValTime);
+                    console.log("Length Time = ", splitValLengthTime);
+                    tbody.innerHTML = "";
+                    for (i = 0; i < splitValLengthClass; i++) {
+                        TheStudent.forEach(element => {
+                            AddItemToTable(strValClass.split(',')[i], strValTemp.split(',')[i] + "°", strValTime.split(',')[i]);
+                        })
+                    }
+                }
+            });
         }
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
         const firebaseConfig = {
             apiKey: "AIzaSyAEmhJFotfwHa49BOB2gCmPXS36nE2J6gM",
@@ -67,31 +118,22 @@
             messagingSenderId: "1038539515204",
             appId: "1:1038539515204:web:35fd7afeadd6758eaa6311"
         };
-
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        import { getDatabase, ref, child, onValue, get }
+        import { getDatabase, ref, get, set, child, update, onValue, remove }
             from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js";
         const db = getDatabase();
-
-
-
-
         function GetAllDataOnce() {
             const dbRef = ref(db);
             get(child(dbRef, "Attendance"))
                 .then((snapshot) => {
                     var students = [];
-
                     snapshot.forEach(childSnapshot => {
                         students.push(childSnapshot.val());
                     });
                     AddAllItemsToTable(students);
-
                 });
         }
         window.onload = GetAllDataOnce();
-
     </script>
 
 </body>
