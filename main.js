@@ -1,9 +1,6 @@
 const loginForm = document.getElementById("login-form");
 const loginButton = document.getElementById("login-form-submit");
-var date;
-var classs;
-var splitDate;
-var finalDate;
+
 loginButton.addEventListener("click", (e) => {
     e.preventDefault();
     const username = loginForm.username.value;

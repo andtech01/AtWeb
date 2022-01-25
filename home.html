@@ -80,9 +80,9 @@
                         <option value="TwelveD">12D</option>
                     </select></td>
             </tr>
-            <tr>
+            <tr action = "data.html">
                 <td><label for="Date" id="dateLabel">Date:</label></td>
-                <td><input type="date" id="Date" name="Date"></td>
+                <td><input  type="date" id="Date" name="Date"></td>
             </tr>
             <br><br><br><br>
             <tr></tr>
@@ -121,9 +121,9 @@
             else {
                 splitDate = date.split('-');
                 finalDate = date.split('-')[2] + "-" + date.split('-')[01] + "-" + date.split('-')[0];
-                alert("Date = " + finalDate + " Class = " + classs);
-                var queryString = finalDate + "," + classs;
-                window.location.href = "data.html" + queryString;
+                localStorage.setItem("Date", finalDate);
+                localStorage.setItem("Class", classs);
+                window.open("data.html");
             }
         }
 
