@@ -1,7 +1,7 @@
 body{
     margin: 0;
     padding: 0;
-    background: url(photos/Background.png) no-repeat center center fixed;
+    background: url(Background.png) no-repeat center center fixed;
     background-size: cover;
     background-position: center;
     font-family: sans-serif;
@@ -49,23 +49,6 @@ h1{
     color: #000;
     font-size: 16px;
 }
-/* .loginbox input[type='submit']
-{
-    
-    border: none;
-    outline: none;
-    height: 40px;
-    background: #1c8adb;
-    color: #000;
-    font-size: 18px;
-    border-radius: 20px;
-}
-.loginbox input[type='submit']:hover
-{
-    cursor: pointer;
-    background: #ffc107;
-    color: rgb(255, 255, 255);
-} */
 
 .loginbox input[type='submit']
 {

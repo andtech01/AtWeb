@@ -8,53 +8,36 @@
     <title>Attendance List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="homestyle.css">
+    <link rel="stylesheet" href="table.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Mukta:wght@300;400;600;700;800&family=Noto+Sans:wght@400;700&display=swap"
+        rel="stylesheet">
 
 
 </head>
 
 <body>
     <div class="container mt-3">
-        <table class="table table-dark">
-            <thead>
+        <table id="myTable">
+            <tr>
                 <th>No:</th>
                 <th>Name</th>
                 <th>Temperature</th>
-                <th>Time of arrival</th>
-            </thead>
-            <tbody id="tbody1">
-
-            </tbody>
+                <th>Timings</th>
+            </tr>
         </table>
     </div>
     <script type="module">
         var classs = localStorage.getItem("Class")
         var date = localStorage.getItem("Date")
-        var classUrl = "Attendance/" + date + "/" + classs; 
+        var classUrl = "Attendance/" + date + "/" + classs;
         var tempUrl = "Attendance/" + date + "/" + classs + "Temp";
         var timeUrl = "Attendance/" + date + "/" + classs + "Timings";
         var stdNo = 0;
         var tbody = document.getElementById('tbody1');
-        function AddItemToTable(name, temp, time) {
-            let trow = document.createElement("tr")
-            let td1 = document.createElement("td")
-            let td2 = document.createElement("td")
-            let td3 = document.createElement("td")
-            let td4 = document.createElement("td")
-            td1.innerHTML = ++stdNo + ".";
-            td2.innerHTML = name;
-            td3.innerHTML = temp;
-            td4.innerHTML = time;
-
-
-            trow.appendChild(td1);
-            trow.appendChild(td2);
-            trow.appendChild(td3);
-            trow.appendChild(td4);
-            tbody.appendChild(trow);
-        }
 
         function AddAllItemsToTable(TheStudent) {
+            var number = 1;
             var strValClass;
             var splitValClass;
             var splitValLengthClass;
@@ -94,11 +77,19 @@
                     splitValLengthTime = splitValTime.length;
                     console.log(splitValTime);
                     console.log("Length Time = ", splitValLengthTime);
-                    tbody.innerHTML = "";
                     for (i = 0; i < splitValLengthTemp; i++) {
-                        TheStudent.forEach(element => {
-                            AddItemToTable(strValClass.split(',')[i], strValTemp.split(',')[i] + "°", strValTime.split(',')[i]);
-                        })
+                        var table = document.getElementById("myTable");
+                        var row = table.insertRow(-1);
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        cell1.innerHTML = number;
+                        cell2.innerHTML = strValClass.split(',')[i];
+                        cell3.innerHTML = strValTemp.split(',')[i];
+                        cell4.innerHTML = strValTime.split(',')[i];
+                        number = number + 1;
+
                     }
                 }
             });
@@ -120,16 +111,9 @@
         const db = getDatabase();
         function GetAllDataOnce() {
             const dbRef = ref(db);
-            get(child(dbRef, "Attendance"))
-                .then((snapshot) => {
-                    var students = [];
-                    snapshot.forEach(childSnapshot => {
-                        students.push(childSnapshot.val());
-                    });
-                    AddAllItemsToTable(students);
-                });
         }
-        window.onload = GetAllDataOnce();
+        window.onload = AddAllItemsToTable();
+
     </script>
 
 </body>
