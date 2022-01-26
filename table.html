@@ -12,21 +12,38 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Mukta:wght@300;400;600;700;800&family=Noto+Sans:wght@400;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
 </head>
 
-<body>
+<body style="background-color:  #004882;">
     <div class="container mt-3">
         <table id="myTable">
             <tr>
                 <th>No:</th>
-                <th>Name</th>
-                <th>Temperature</th>
-                <th>Timings</th>
+                <th>Name:</th>
+                <th>Temperature:</th>
+                <th>Time of arrival:</th>
             </tr>
         </table>
     </div>
+    <button class="material-icons" id="excelInst" onclick="myFunction()">file_download</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        var classs = localStorage.getItem("Class")
+        var date = localStorage.getItem("Date")
+        function myFunction() {
+            let data = document.getElementById('myTable');
+            var fp = XLSX.utils.table_to_book(data, { sheet: 'bvmg' });
+            XLSX.write(fp, {
+                bookType: 'xlsx',
+                type: 'base64'
+            });
+            name = classs + "(" + date + ")" + '.xlsx';
+            XLSX.writeFile(fp, name);
+        }
+    </script>
     <script type="module">
         var classs = localStorage.getItem("Class")
         var date = localStorage.getItem("Date")

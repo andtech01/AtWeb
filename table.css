@@ -56,5 +56,12 @@ tr{
  color: white;
 }
 tr:nth-child(even){
- background-color: #eeeeee;
+ background-color: #ffffff;
+}
+#excelInst  {
+    font-size:30px;
+    background-color:  #004882;
+    color: white;
+    border-radius: 6px;
+    
 }
